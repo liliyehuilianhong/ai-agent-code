@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanical Concept Design Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        accent: '#FF7D00',
+                        neutral: '#F2F3F5',
+                        dark: '#1D2129'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-inter text-dark">
+    <!-- Navigation bar -->
+    <nav class="bg-white shadow-md fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-cogs text-primary text-2xl"></i>
+                <span class="text-xl font-bold text-primary">Mechanical Concept Design Assistant</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#features" class="text-gray-600 hover:text-primary transition-colors">Features</a>
+                <a href="#workflow" class="text-gray-600 hover:text-primary transition-colors">Workflow</a>
+                <a href="#demo" class="text-gray-600 hover:text-primary transition-colors">Online Demo</a>
+                <a href="#about" class="text-gray-600 hover:text-primary transition-colors">About the System</a>
+            </div>
+            <button class="md:hidden text-gray-600" id="menu-toggle">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white shadow-lg absolute w-full" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#features" class="text-gray-600 hover:text-primary py-2 transition-colors">Features</a>
+                <a href="#workflow" class="text-gray-600 hover:text-primary py-2 transition-colors">Workflow</a>
+                <a href="#demo" class="text-gray-600 hover:text-primary py-2 transition-colors">Online Demo</a>
+                <a href="#about" class="text-gray-600 hover:text-primary py-2 transition-colors">About the System</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero section -->
+    <header class="pt-24 pb-16 bg-gradient-to-br from-primary/10 to-secondary/10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-dark">
+                        Intelligent Mechanical Concept Design<br>
+                        <span class="text-primary">Powered by AI</span>
+                    </h1>
+                    <p class="mt-6 text-gray-600 text-lg max-w-xl">
+                        Leverage advanced AI retrieval technology to provide end - to - end support from requirement analysis to design solution generation, accelerating innovation and enhancing product competitiveness.
+                    </p>
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="#demo" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-lg transition-all duration-300 flex items-center">
+                            <i class="fa fa-rocket mr-2"></i>
+                            Try Now
+                        </a>
+                        <a href="#workflow" class="bg-white hover:bg-gray-100 text-primary border border-primary px-8 py-3 rounded-lg shadow-md transition-all duration-300 flex items-center">
+                            <i class="fa fa-play-circle-o mr-2"></i>
+                            Learn the Workflow
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="bg-white p-6 rounded-xl shadow-2xl transform rotate-2 card-hover">
+                        <img src="https://picsum.photos/seed/design/600/400" alt="Mechanical design schematic" class="w-full h-auto rounded-lg">
+                        <div class="absolute -top-4 -right-4 bg-accent text-white px-4 py-2 rounded-lg shadow-lg transform rotate-6">
+                            <i class="fa fa-lightbulb-o mr-1"></i> Innovative Design
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-2xl transform -rotate-3 -translate-y-4 translate-x-4 card-hover">
+                        <img src="https://picsum.photos/seed/ai/600/400" alt="AI analysis process" class="w-full h-auto rounded-lg">
+                        <div class="absolute -bottom-4 -left-4 bg-primary text-white px-4 py-2 rounded-lg shadow-lg transform -rotate-6">
+                            <i class="fa fa-microchip mr-1"></i> AI - Powered
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark">System Features</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+                <p class="mt-6 text-gray-600 max-w-3xl mx-auto">
+                    Our mechanical concept design assistant integrates advanced AI retrieval technology to provide comprehensive design support.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature card 1 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-search text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Intelligent Requirement Analysis</h3>
+                    <p class="text-gray-600">
+                        Automatically analyze user requirements, extract key functions, performance indicators, and constraints to provide precise guidance for design.
+                    </p>
+                </div>
+
+                <!-- Feature card 2 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-14 h-14 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-database text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Case Retrieval and Reuse</h3>
+                    <p class="text-gray-600">
+                        Based on the historical case library and global design knowledge base, quickly retrieve similar design solutions and provide reusable design ideas.
+                    </p>
+                </div>
+
+                <!-- Feature card 3 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-lightbulb-o text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Innovative Design Generation</h3>
+                    <p class="text-gray-600">
+                        Combine AI technology and domain knowledge to generate innovative design solutions and provide multiple optional design ideas.
+                    </p>
+                </div>
+
+                <!-- Feature card 4 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-check-circle text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Multi - Dimensional Evaluation</h3>
+                    <p class="text-gray-600">
+                        Evaluate and compare design solutions from multiple dimensions such as technical feasibility, cost - effectiveness, and operational convenience.
+                    </p>
+                </div>
+
+                <!-- Feature card 5 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-refresh text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Iterative Optimization</h3>
+                    <p class="text-gray-600">
+                        Refine the design solution based on user feedback and evaluation results to continuously improve the design quality.
+                    </p>
+                </div>
+
+                <!-- Feature card 6 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-file-text-o text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Structured Report</h3>
+                    <p class="text-gray-600">
+                        Generate a structured design report containing requirement analysis, historical cases, design suggestions, and reference schematic diagrams.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow section -->
+    <section id="workflow" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark">Workflow</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+                <p class="mt-6 text-gray-600 max-w-3xl mx-auto">
+                    Our system follows a scientific and rigorous design process, providing professional support at every step from requirements to solutions.
+                </p>
+            </div>
+
+            <div class="relative">
+                <!-- Workflow line -->
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-primary/20 transform -translate-x-1/2"></div>
+
+                <!-- Workflow steps -->
+                <div class="space-y-12">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-5/12 mb-8 md:mb-0 md:pr-12 text-right">
+                            <h3 class="text-xl font-bold text-dark">Requirement Collection and Analysis</h3>
+                            <p class="mt-3 text-gray-600">
+                                Designers collect, organize, and analyze customer requirement information to clarify various requirements such as product functions, performance, cost budgets, etc. AI assists in extracting key information and prioritizing requirements.
+                            </p>
+                        </div>
+                        <div class="md:w-2/12 flex justify-center">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
+                                <span class="font-bold">1</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 md:pl-12">
+                            <img src="https://picsum.photos/seed/req/500/300" alt="Requirement analysis" class="rounded-lg shadow-md w-full">
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex flex-col md:flex-row-reverse items-center">
+                        <div class="md:w-5/12 mb-8 md:mb-0 md:pl-12">
+                            <h3 class="text-xl font-bold text-dark">Solution Generation</h3>
+                            <p class="mt-3 text-gray-600">
+                                The AI agent receives requirement information, uses pre - trained knowledge and database retrieval to generate solutions including historical reusable cases, global reference cases, and detailed design suggestions.
+                            </p>
+                        </div>
+                        <div class="md:w-2/12 flex justify-center">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
+                                <span class="font-bold">2</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 md:pr-12">
+                            <img src="https://picsum.photos/seed/solution/500/300" alt="Solution generation" class="rounded-lg shadow-md w-full">
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-5/12 mb-8 md:mb-0 md:pr-12 text-right">
+                            <h3 class="text-xl font-bold text-dark">Solution Evaluation</h3>
+                            <p class="mt-3 text-gray-600">
+                                Designers evaluate the generated solutions from multiple dimensions, including technical feasibility, cost - effectiveness, operational convenience, etc. AI provides quantitative evaluation indicators and suggestions.
+                            </p>
+                        </div>
+                        <div class="md:w-2/12 flex justify-center">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
+                                <span class="font-bold">3</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 md:pl-12">
+                            <img src="https://picsum.photos/seed/evaluation/500/300" alt="Solution evaluation" class="rounded-lg shadow-md w-full">
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex flex-col md:flex-row-reverse items-center">
+                        <div class="md:w-5/12 mb-8 md:mb-0 md:pl-12">
+                            <h3 class="text-xl font-bold text-dark">Solution Optimization</h3>
+                            <p class="mt-3 text-gray-600">
+                                Based on the evaluation results and user feedback, the AI refines the design solution iteratively to generate an improved solution. This process can be repeated until a satisfactory design is obtained.
+                            </p>
+                        </div>
+                        <div class="md:w-2/12 flex justify-center">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
+                                <span class="font-bold">4</span>
+                            </div>
+                        </div>
+                        <div class="md:w-5/12 md:pr-12">
+                            <img src="https://picsum.photos/seed/refine/500/300" alt="Solution optimization" class="rounded-lg shadow-md w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Online demo section -->
+    <section id="demo" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark">Online Demo</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+                <p class="mt-6 text-gray-600 max-w-3xl mx-auto">
+                    Experience our mechanical concept design assistant. Enter your design requirements and get AI - generated design solutions.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+                <div class="bg-gray-100 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="font-bold text-lg">Mechanical Concept Design Assistant</h3>
+                    <div class="flex space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="mb-8">
+                        <label for="requirements" class="block text-gray-700 font-medium mb-2">Enter design requirements:</label>
+                        <textarea id="requirements" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="Please describe your mechanical design requirements in detail, for example: Design a small excavator for mountainous operations, which should be able to adapt to complex terrains, have an excavation depth of no less than 2 meters, be easy to operate, and have a cost controlled within 100,000 yuan."></textarea>
+                        <button id="generate-btn" class="mt-4 bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg shadow transition-all flex items-center">
+                            <i class="fa fa-cogs mr-2"></i>
+                            Generate Design Solution
+                        </button>
+                    </div>
+
+                    <div id="loading-indicator" class="hidden flex justify-center my-8">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                    </div>
+
+                    <div id="result-container" class="hidden">
+                        <h4 class="font-bold text-xl mb-4">Design Solution</h4>
+
+                        <div class="space-y-6">
+                            <!-- Requirement analysis -->
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-700 flex items-center mb-2">
+                                    <i class="fa fa-list-alt mr-2"></i> Requirement Analysis
+                                </h5>
+                                <div id="requirement-analysis" class="text-gray-700"></div>
+                            </div>
+
+                            <!-- Historical reusable cases -->
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-green-700 flex items-center mb-2">
+                                    <i class="fa fa-history mr-2"></i> Historical Reusable Cases
+                                </h5>
+                                <div id="historical-cases" class="text-gray-700"></div>
+                            </div>
+
+                            <!-- Global reference cases -->
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-purple-700 flex items-center mb-2">
+                                    <i class="fa fa-globe mr-2"></i> Global Reference Cases
+                                </h5>
+                                <div id="global-cases" class="text-gray-700"></div>
+                            </div>
+
+                            <!-- Design text content -->
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-yellow-700 flex items-center mb-2">
+                                    <i class="fa fa-file-text-o mr-2"></i> Design Text Content
+                                </h5>
+                                <div id="design-content" class="text-gray-700"></div>
+                            </div>
+
+                            <!-- Reference schematic diagrams -->
+                            <div class="bg-indigo-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-indigo-700

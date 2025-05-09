@@ -1,0 +1,10 @@
+{
+    "temperature": 0.1,
+    "model_name": "GLM",
+    "max_tokens": 4000,
+    "chunk_size": 1000,
+    "chunk_overlap": 200,
+    "persist_directory": "db",
+    "search_k": 10,
+    "api_key": "your_GLM_api_key_here"
+}    
