@@ -1,367 +1,735 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mechanical Concept Design Assistant</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#165DFF',
-                        secondary: '#36CFC9',
-                        accent: '#FF7D00',
-                        neutral: '#F2F3F5',
-                        dark: '#1D2129'
-                    },
-                    fontFamily: {
-                        inter: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .card-hover {
-                transition: all 0.3s ease;
-            }
-
-            .card-hover:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mechanical Design Case Retrieval System</title>
+  <!-- External Resources -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#36CFC9',
+            accent: '#FF7D00',
+            dark: '#1D2129',
+            light: '#F2F3F5',
+            muted: '#86909C'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <!-- Custom Styles -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-shadow {
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.02);
+      }
+      .text-balance {
+        text-wrap: balance;
+      }
+    }
+  </style>
 </head>
+<body class="font-inter bg-gray-50 text-dark min-h-screen flex flex-col">
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 transition-all duration-300">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center space-x-2">
+          <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <i class="fa fa-cogs text-white text-xl"></i>
+          </div>
+          <span class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Mechanical Design Library</span>
+        </div>
+        
+        <!-- Navigation Links - Desktop -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="#" class="text-primary font-medium hover:text-primary/80 transition-colors">Home</a>
+          <a href="#" class="text-dark font-medium hover:text-primary transition-colors">Case Search</a>
+          <a href="#" class="text-dark font-medium hover:text-primary transition-colors">Popular Cases</a>
+          <a href="#" class="text-dark font-medium hover:text-primary transition-colors">User Guide</a>
+        </nav>
+        
+        <!-- User Actions -->
+        <div class="flex items-center space-x-4">
+          <button class="hidden md:flex items-center space-x-1 text-muted hover:text-primary transition-colors">
+            <i class="fa fa-search"></i>
+            <span>Search Cases</span>
+          </button>
+          <button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-all shadow-md hover:shadow-lg">
+            <i class="fa fa-upload"></i>
+            <span>Upload Case</span>
+          </button>
+          <button class="md:hidden text-dark hover:text-primary transition-colors">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<body class="bg-gray-50 font-inter text-dark">
-    <!-- Navigation bar -->
-    <nav class="bg-white shadow-md fixed w-full z-50 transition-all duration-300" id="navbar">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fa fa-cogs text-primary text-2xl"></i>
-                <span class="text-xl font-bold text-primary">Mechanical Concept Design Assistant</span>
-            </div>
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="#features" class="text-gray-600 hover:text-primary transition-colors">Features</a>
-                <a href="#workflow" class="text-gray-600 hover:text-primary transition-colors">Workflow</a>
-                <a href="#demo" class="text-gray-600 hover:text-primary transition-colors">Online Demo</a>
-                <a href="#about" class="text-gray-600 hover:text-primary transition-colors">About the System</a>
-            </div>
-            <button class="md:hidden text-gray-600" id="menu-toggle">
-                <i class="fa fa-bars text-xl"></i>
+  <!-- Mobile Menu (Hidden by default) -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 shadow-lg">
+    <div class="container mx-auto px-4 py-3 space-y-3">
+      <a href="#" class="block text-primary font-medium py-2">Home</a>
+      <a href="#" class="block text-dark font-medium py-2 hover:text-primary">Case Search</a>
+      <a href="#" class="block text-dark font-medium py-2 hover:text-primary">Popular Cases</a>
+      <a href="#" class="block text-dark font-medium py-2 hover:text-primary">User Guide</a>
+      <div class="relative mt-2">
+        <input type="text" placeholder="Search cases..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+        <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-muted"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Hero Section -->
+    <section class="mb-16">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="space-y-6">
+          <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight">
+            Mechanical Design Case <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Intelligent Search</span>
+          </h1>
+          <p class="text-lg text-gray-600 max-w-lg text-balance">
+            A one-stop platform for mechanical design resources, bringing together high-quality cases to help you quickly find design inspiration and solutions.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg flex items-center space-x-2 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+              <i class="fa fa-search"></i>
+              <span>Search Cases</span>
             </button>
-        </div>
-        <!-- Mobile menu -->
-        <div class="md:hidden hidden bg-white shadow-lg absolute w-full" id="mobile-menu">
-            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
-                <a href="#features" class="text-gray-600 hover:text-primary py-2 transition-colors">Features</a>
-                <a href="#workflow" class="text-gray-600 hover:text-primary py-2 transition-colors">Workflow</a>
-                <a href="#demo" class="text-gray-600 hover:text-primary py-2 transition-colors">Online Demo</a>
-                <a href="#about" class="text-gray-600 hover:text-primary py-2 transition-colors">About the System</a>
+            <button class="bg-white hover:bg-gray-50 text-primary border border-primary px-6 py-3 rounded-lg flex items-center space-x-2 transition-all shadow-md hover:shadow-lg">
+              <i class="fa fa-book"></i>
+              <span>Browse Case Library</span>
+            </button>
+          </div>
+          <div class="flex items-center space-x-4 pt-4">
+            <div class="flex -space-x-2">
+              <img src="https://picsum.photos/seed/user1/40/40" alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white">
+              <img src="https://picsum.photos/seed/user2/40/40" alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white">
+              <img src="https://picsum.photos/seed/user3/40/40" alt="User avatar" class="w-10 h-10 rounded-full border-2 border-white">
+              <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
+                500+
+              </div>
             </div>
+            <p class="text-sm text-gray-600">Over 500 engineers have joined</p>
+          </div>
         </div>
-    </nav>
-
-    <!-- Hero section -->
-    <header class="pt-24 pb-16 bg-gradient-to-br from-primary/10 to-secondary/10">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-dark">
-                        Intelligent Mechanical Concept Design<br>
-                        <span class="text-primary">Powered by AI</span>
-                    </h1>
-                    <p class="mt-6 text-gray-600 text-lg max-w-xl">
-                        Leverage advanced AI retrieval technology to provide end - to - end support from requirement analysis to design solution generation, accelerating innovation and enhancing product competitiveness.
-                    </p>
-                    <div class="mt-8 flex flex-wrap gap-4">
-                        <a href="#demo" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-lg transition-all duration-300 flex items-center">
-                            <i class="fa fa-rocket mr-2"></i>
-                            Try Now
-                        </a>
-                        <a href="#workflow" class="bg-white hover:bg-gray-100 text-primary border border-primary px-8 py-3 rounded-lg shadow-md transition-all duration-300 flex items-center">
-                            <i class="fa fa-play-circle-o mr-2"></i>
-                            Learn the Workflow
-                        </a>
-                    </div>
+        <div class="relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl blur-lg opacity-70"></div>
+          <div class="relative bg-white rounded-2xl overflow-hidden shadow-2xl">
+            <img src="https://picsum.photos/seed/engine/800/500" alt="Mechanical design showcase" class="w-full h-auto">
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <i class="fa fa-cog text-primary text-xl"></i>
                 </div>
-                <div class="md:w-1/2 relative">
-                    <div class="bg-white p-6 rounded-xl shadow-2xl transform rotate-2 card-hover">
-                        <img src="https://picsum.photos/seed/design/600/400" alt="Mechanical design schematic" class="w-full h-auto rounded-lg">
-                        <div class="absolute -top-4 -right-4 bg-accent text-white px-4 py-2 rounded-lg shadow-lg transform rotate-6">
-                            <i class="fa fa-lightbulb-o mr-1"></i> Innovative Design
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-2xl transform -rotate-3 -translate-y-4 translate-x-4 card-hover">
-                        <img src="https://picsum.photos/seed/ai/600/400" alt="AI analysis process" class="w-full h-auto rounded-lg">
-                        <div class="absolute -bottom-4 -left-4 bg-primary text-white px-4 py-2 rounded-lg shadow-lg transform -rotate-6">
-                            <i class="fa fa-microchip mr-1"></i> AI - Powered
-                        </div>
-                    </div>
+                <div>
+                  <h3 class="text-white font-semibold">Turbine Engine Design Solution</h3>
+                  <p class="text-white/80 text-sm">Aerospace | High Precision | Innovative Design</p>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </header>
-
-    <!-- Features section -->
-    <section id="features" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark">System Features</h2>
-                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
-                <p class="mt-6 text-gray-600 max-w-3xl mx-auto">
-                    Our mechanical concept design assistant integrates advanced AI retrieval technology to provide comprehensive design support.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Feature card 1 -->
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-search text-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Intelligent Requirement Analysis</h3>
-                    <p class="text-gray-600">
-                        Automatically analyze user requirements, extract key functions, performance indicators, and constraints to provide precise guidance for design.
-                    </p>
-                </div>
-
-                <!-- Feature card 2 -->
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-14 h-14 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-database text-secondary text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Case Retrieval and Reuse</h3>
-                    <p class="text-gray-600">
-                        Based on the historical case library and global design knowledge base, quickly retrieve similar design solutions and provide reusable design ideas.
-                    </p>
-                </div>
-
-                <!-- Feature card 3 -->
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-lightbulb-o text-accent text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Innovative Design Generation</h3>
-                    <p class="text-gray-600">
-                        Combine AI technology and domain knowledge to generate innovative design solutions and provide multiple optional design ideas.
-                    </p>
-                </div>
-
-                <!-- Feature card 4 -->
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-check-circle text-green-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Multi - Dimensional Evaluation</h3>
-                    <p class="text-gray-600">
-                        Evaluate and compare design solutions from multiple dimensions such as technical feasibility, cost - effectiveness, and operational convenience.
-                    </p>
-                </div>
-
-                <!-- Feature card 5 -->
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-refresh text-purple-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Iterative Optimization</h3>
-                    <p class="text-gray-600">
-                        Refine the design solution based on user feedback and evaluation results to continuously improve the design quality.
-                    </p>
-                </div>
-
-                <!-- Feature card 6 -->
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
-                        <i class="fa fa-file-text-o text-indigo-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Structured Report</h3>
-                    <p class="text-gray-600">
-                        Generate a structured design report containing requirement analysis, historical cases, design suggestions, and reference schematic diagrams.
-                    </p>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
 
-    <!-- Workflow section -->
-    <section id="workflow" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark">Workflow</h2>
-                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
-                <p class="mt-6 text-gray-600 max-w-3xl mx-auto">
-                    Our system follows a scientific and rigorous design process, providing professional support at every step from requirements to solutions.
-                </p>
+    <!-- Statistics -->
+    <section class="mb-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+              <i class="fa fa-folder-open text-primary text-xl"></i>
             </div>
-
-            <div class="relative">
-                <!-- Workflow line -->
-                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-primary/20 transform -translate-x-1/2"></div>
-
-                <!-- Workflow steps -->
-                <div class="space-y-12">
-                    <!-- Step 1 -->
-                    <div class="flex flex-col md:flex-row items-center">
-                        <div class="md:w-5/12 mb-8 md:mb-0 md:pr-12 text-right">
-                            <h3 class="text-xl font-bold text-dark">Requirement Collection and Analysis</h3>
-                            <p class="mt-3 text-gray-600">
-                                Designers collect, organize, and analyze customer requirement information to clarify various requirements such as product functions, performance, cost budgets, etc. AI assists in extracting key information and prioritizing requirements.
-                            </p>
-                        </div>
-                        <div class="md:w-2/12 flex justify-center">
-                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
-                                <span class="font-bold">1</span>
-                            </div>
-                        </div>
-                        <div class="md:w-5/12 md:pl-12">
-                            <img src="https://picsum.photos/seed/req/500/300" alt="Requirement analysis" class="rounded-lg shadow-md w-full">
-                        </div>
-                    </div>
-
-                    <!-- Step 2 -->
-                    <div class="flex flex-col md:flex-row-reverse items-center">
-                        <div class="md:w-5/12 mb-8 md:mb-0 md:pl-12">
-                            <h3 class="text-xl font-bold text-dark">Solution Generation</h3>
-                            <p class="mt-3 text-gray-600">
-                                The AI agent receives requirement information, uses pre - trained knowledge and database retrieval to generate solutions including historical reusable cases, global reference cases, and detailed design suggestions.
-                            </p>
-                        </div>
-                        <div class="md:w-2/12 flex justify-center">
-                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
-                                <span class="font-bold">2</span>
-                            </div>
-                        </div>
-                        <div class="md:w-5/12 md:pr-12">
-                            <img src="https://picsum.photos/seed/solution/500/300" alt="Solution generation" class="rounded-lg shadow-md w-full">
-                        </div>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="flex flex-col md:flex-row items-center">
-                        <div class="md:w-5/12 mb-8 md:mb-0 md:pr-12 text-right">
-                            <h3 class="text-xl font-bold text-dark">Solution Evaluation</h3>
-                            <p class="mt-3 text-gray-600">
-                                Designers evaluate the generated solutions from multiple dimensions, including technical feasibility, cost - effectiveness, operational convenience, etc. AI provides quantitative evaluation indicators and suggestions.
-                            </p>
-                        </div>
-                        <div class="md:w-2/12 flex justify-center">
-                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
-                                <span class="font-bold">3</span>
-                            </div>
-                        </div>
-                        <div class="md:w-5/12 md:pl-12">
-                            <img src="https://picsum.photos/seed/evaluation/500/300" alt="Solution evaluation" class="rounded-lg shadow-md w-full">
-                        </div>
-                    </div>
-
-                    <!-- Step 4 -->
-                    <div class="flex flex-col md:flex-row-reverse items-center">
-                        <div class="md:w-5/12 mb-8 md:mb-0 md:pl-12">
-                            <h3 class="text-xl font-bold text-dark">Solution Optimization</h3>
-                            <p class="mt-3 text-gray-600">
-                                Based on the evaluation results and user feedback, the AI refines the design solution iteratively to generate an improved solution. This process can be repeated until a satisfactory design is obtained.
-                            </p>
-                        </div>
-                        <div class="md:w-2/12 flex justify-center">
-                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg relative z-10">
-                                <span class="font-bold">4</span>
-                            </div>
-                        </div>
-                        <div class="md:w-5/12 md:pr-12">
-                            <img src="https://picsum.photos/seed/refine/500/300" alt="Solution optimization" class="rounded-lg shadow-md w-full">
-                        </div>
-                    </div>
-                </div>
+            <div>
+              <h3 class="text-2xl font-bold">10,000+</h3>
+              <p class="text-gray-500">Design Cases</p>
             </div>
+          </div>
         </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
+              <i class="fa fa-users text-secondary text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold">5,000+</h3>
+              <p class="text-gray-500">Registered Users</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+              <i class="fa fa-download text-accent text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold">25,000+</h3>
+              <p class="text-gray-500">Case Downloads</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
+              <i class="fa fa-check-circle text-green-500 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold">98%</h3>
+              <p class="text-gray-500">Satisfaction Rate</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Online demo section -->
-    <section id="demo" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark">Online Demo</h2>
-                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
-                <p class="mt-6 text-gray-600 max-w-3xl mx-auto">
-                    Experience our mechanical concept design assistant. Enter your design requirements and get AI - generated design solutions.
-                </p>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
-                <div class="bg-gray-100 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                    <h3 class="font-bold text-lg">Mechanical Concept Design Assistant</h3>
-                    <div class="flex space-x-2">
-                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                    </div>
+    <!-- Case Upload Section -->
+    <section class="mb-16">
+      <div class="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl p-8 md:p-12 shadow-xl">
+        <div class="max-w-3xl mx-auto text-center mb-10">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">Upload Your Design Case</h2>
+          <p class="text-gray-600 text-lg">Share your excellent design works, get professional feedback, communicate with peers, and improve your mechanical design skills together</p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto">
+          <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg">
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer" id="upload-area">
+              <div class="space-y-4">
+                <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
+                  <i class="fa fa-cloud-upload text-primary text-2xl"></i>
                 </div>
+                <h3 class="text-xl font-semibold">Drag and Drop Your Design Files Here</h3>
+                <p class="text-gray-500">Supported formats: PDF, DWG, STEP, IGES, JPG, PNG</p>
+                <button class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg transition-all shadow-md hover:shadow-lg">
+                  Select Files to Upload
+                </button>
+              </div>
+            </div>
+            
+            <div class="mt-8 space-y-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Case Title</label>
+                <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Enter case title">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Case Description</label>
+                <textarea rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Describe your design case in detail..."></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <select class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                  <option value="">Select category</option>
+                  <option value="automotive">Automotive Engineering</option>
+                  <option value="aerospace">Aerospace Engineering</option>
+                  <option value="robotics">Robotics</option>
+                  <option value="energy">Energy Power</option>
+                  <option value="general">General Machinery</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Keywords</label>
+                <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Enter keywords, separated by commas">
+              </div>
+              
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input id="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded focus:ring-primary/50 focus:ring-offset-0">
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="terms" class="text-gray-600">I confirm that the uploaded case is an original work and agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a></label>
+                </div>
+              </div>
+              
+              <div class="pt-4">
+                <button class="w-full bg-primary hover:bg-primary/90 text-white px-6 py-4 rounded-lg flex items-center justify-center space-x-2 transition-all shadow-lg hover:shadow-xl">
+                  <i class="fa fa-paper-plane"></i>
+                  <span>Submit Case</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                <div class="p-6">
-                    <div class="mb-8">
-                        <label for="requirements" class="block text-gray-700 font-medium mb-2">Enter design requirements:</label>
-                        <textarea id="requirements" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="Please describe your mechanical design requirements in detail, for example: Design a small excavator for mountainous operations, which should be able to adapt to complex terrains, have an excavation depth of no less than 2 meters, be easy to operate, and have a cost controlled within 100,000 yuan."></textarea>
-                        <button id="generate-btn" class="mt-4 bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg shadow transition-all flex items-center">
-                            <i class="fa fa-cogs mr-2"></i>
-                            Generate Design Solution
-                        </button>
-                    </div>
+    <!-- Case Showcase -->
+    <section class="mb-16">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold">Popular Cases</h2>
+        <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center space-x-1">
+          <span>View All</span>
+          <i class="fa fa-arrow-right"></i>
+        </a>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Case Card 1 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover-scale">
+          <div class="relative">
+            <img src="https://picsum.photos/seed/engine1/600/400" alt="Mechanical design case" class="w-full h-48 object-cover">
+            <div class="absolute top-4 right-4 bg-primary text-white text-xs font-bold px-2 py-1 rounded">
+              Automotive Engineering
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">New Engine Cylinder Block Design Optimization</h3>
+            <p class="text-gray-600 mb-4 line-clamp-2">Finite element analysis-based optimization design of engine cylinder block structure, improving heat dissipation efficiency by 30% and structural strength by 15%.</p>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center space-x-2">
+                <img src="https://picsum.photos/seed/engineer1/40/40" alt="Designer avatar" class="w-8 h-8 rounded-full">
+                <span class="text-sm text-gray-600">Engineer Li Ming</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="text-sm text-gray-500 flex items-center">
+                  <i class="fa fa-eye mr-1"></i> 2.4k
+                </span>
+                <span class="text-sm text-gray-500 flex items-center">
+                  <i class="fa fa-download mr-1"></i> 560
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Case Card 2 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover-scale">
+          <div class="relative">
+            <img src="https://picsum.photos/seed/drone1/600/400" alt="Mechanical design case" class="w-full h-48 object-cover">
+            <div class="absolute top-4 right-4 bg-secondary text-white text-xs font-bold px-2 py-1 rounded">
+              Aerospace Engineering
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">UAV Wing Lightweight Design</h3>
+            <p class="text-gray-600 mb-4 line-clamp-2">Composite material-based UAV wing structure design, reducing weight by 25% while maintaining strength and extending flight time.</p>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center space-x-2">
+                <img src="https://picsum.photos/seed/engineer2/40/40" alt="Designer avatar" class="w-8 h-8 rounded-full">
+                <span class="text-sm text-gray-600">Design Studio Wang</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="text-sm text-gray-500 flex items-center">
+                  <i class="fa fa-eye mr-1"></i> 1.8k
+                </span>
+                <span class="text-sm text-gray-500 flex items-center">
+                  <i class="fa fa-download mr-1"></i> 420
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Case Card 3 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover-scale">
+          <div class="relative">
+            <img src="https://picsum.photos/seed/robotarm1/600/400" alt="Mechanical design case" class="w-full h-48 object-cover">
+            <div class="absolute top-4 right-4 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+              Robotics
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Six-Axis Robotic Arm Joint Optimization Design</h3>
+            <p class="text-gray-600 mb-4 line-clamp-2">Kinematics analysis-based optimization of six-axis robotic arm joint structure, improving positioning accuracy and motion flexibility of the end effector.</p>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center space-x-2">
+                <img src="https://picsum.photos/seed/engineer3/40/40" alt="Designer avatar" class="w-8 h-8 rounded-full">
+                <span class="text-sm text-gray-600">Dr. Zhang R&D Team</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <span class="text-sm text-gray-500 flex items-center">
+                  <i class="fa fa-eye mr-1"></i> 3.1k
+                </span>
+                <span class="text-sm text-gray-500 flex items-center">
+                  <i class="fa fa-download mr-1"></i> 780
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                    <div id="loading-indicator" class="hidden flex justify-center my-8">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                    </div>
+    <!-- Case Statistics Chart -->
+    <section class="mb-16">
+      <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+        <h2 class="text-2xl font-bold mb-6">Case Category Statistics</h2>
+        <div class="h-80">
+          <canvas id="casesChart"></canvas>
+        </div>
+      </div>
+    </section>
 
-                    <div id="result-container" class="hidden">
-                        <h4 class="font-bold text-xl mb-4">Design Solution</h4>
+    <!-- Recommended Designers -->
+    <section class="mb-16">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold">Recommended Designers</h2>
+        <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center space-x-1">
+          <span>View All</span>
+          <i class="fa fa-arrow-right"></i>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <!-- Designer Card 1 -->
+        <div class="bg-white rounded-xl p-6 shadow-lg text-center hover:shadow-xl transition-all hover-scale">
+          <div class="relative w-24 h-24 mx-auto mb-4">
+            <img src="https://picsum.photos/seed/designer1/120/120" alt="Designer avatar" class="w-full h-full object-cover rounded-full border-4 border-white shadow-md">
+            <div class="absolute -bottom-2 -right-2 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center">
+              <i class="fa fa-check"></i>
+            </div>
+          </div>
+          <h3 class="font-semibold text-lg mb-1">Engineer Chen</h3>
+          <p class="text-gray-500 text-sm mb-3">Automotive Engineering Specialist</p>
+          <div class="flex justify-center space-x-1 mb-4">
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star-half-o text-yellow-400"></i>
+            <span class="text-gray-500 text-sm ml-1">4.8</span>
+          </div>
+          <button class="w-full bg-primary/10 hover:bg-primary/20 text-primary rounded-lg py-2 transition-colors">
+            Follow
+          </button>
+        </div>
+        
+        <!-- Designer Card 2 -->
+        <div class="bg-white rounded-xl p-6 shadow-lg text-center hover:shadow-xl transition-all hover-scale">
+          <div class="relative w-24 h-24 mx-auto mb-4">
+            <img src="https://picsum.photos/seed/designer2/120/120" alt="Designer avatar" class="w-full h-full object-cover rounded-full border-4 border-white shadow-md">
+            <div class="absolute -bottom-2 -right-2 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center">
+              <i class="fa fa-check"></i>
+            </div>
+          </div>
+          <h3 class="font-semibold text-lg mb-1">Dr. Liu</h3>
+          <p class="text-gray-500 text-sm mb-3">Aerospace Engineering Specialist</p>
+          <div class="flex justify-center space-x-1 mb-4">
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <span class="text-gray-500 text-sm ml-1">5.0</span>
+          </div>
+          <button class="w-full bg-primary/10 hover:bg-primary/20 text-primary rounded-lg py-2 transition-colors">
+            Follow
+          </button>
+        </div>
+        
+        <!-- Designer Card 3 -->
+        <div class="bg-white rounded-xl p-6 shadow-lg text-center hover:shadow-xl transition-all hover-scale">
+          <div class="relative w-24 h-24 mx-auto mb-4">
+            <img src="https://picsum.photos/seed/designer3/120/120" alt="Designer avatar" class="w-full h-full object-cover rounded-full border-4 border-white shadow-md">
+            <div class="absolute -bottom-2 -right-2 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center">
+              <i class="fa fa-check"></i>
+            </div>
+          </div>
+          <h3 class="font-semibold text-lg mb-1">Professor Wang</h3>
+          <p class="text-gray-500 text-sm mb-3">Robotics Specialist</p>
+          <div class="flex justify-center space-x-1 mb-4">
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star-o text-yellow-400"></i>
+            <span class="text-gray-500 text-sm ml-1">4.0</span>
+          </div>
+          <button class="w-full bg-primary/10 hover:bg-primary/20 text-primary rounded-lg py-2 transition-colors">
+            Follow
+          </button>
+        </div>
+        
+        <!-- Designer Card 4 -->
+        <div class="bg-white rounded-xl p-6 shadow-lg text-center hover:shadow-xl transition-all hover-scale">
+          <div class="relative w-24 h-24 mx-auto mb-4">
+            <img src="https://picsum.photos/seed/designer4/120/120" alt="Designer avatar" class="w-full h-full object-cover rounded-full border-4 border-white shadow-md">
+            <div class="absolute -bottom-2 -right-2 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center">
+              <i class="fa fa-check"></i>
+            </div>
+          </div>
+          <h3 class="font-semibold text-lg mb-1">Senior Engineer Zhao</h3>
+          <p class="text-gray-500 text-sm mb-3">Energy Power Specialist</p>
+          <div class="flex justify-center space-x-1 mb-4">
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star text-yellow-400"></i>
+            <i class="fa fa-star-half-o text-yellow-400"></i>
+            <span class="text-gray-500 text-sm ml-1">4.7</span>
+          </div>
+          <button class="w-full bg-primary/10 hover:bg-primary/20 text-primary rounded-lg py-2 transition-colors">
+            Follow
+          </button>
+        </div>
+      </div>
+    </section>
 
-                        <div class="space-y-6">
-                            <!-- Requirement analysis -->
-                            <div class="bg-blue-50 p-4 rounded-lg">
-                                <h5 class="font-bold text-blue-700 flex items-center mb-2">
-                                    <i class="fa fa-list-alt mr-2"></i> Requirement Analysis
-                                </h5>
-                                <div id="requirement-analysis" class="text-gray-700"></div>
-                            </div>
+    <!-- Subscription Section -->
+    <section class="mb-16">
+      <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 md:p-12 text-center text-white shadow-xl">
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">Subscribe for Latest Design Cases</h2>
+        <p class="text-white/80 max-w-2xl mx-auto mb-8">Regularly receive selected mechanical design cases and industry trends, so you won't miss any learning and networking opportunities</p>
+        <div class="max-w-md mx-auto">
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input type="email" placeholder="Enter your email address" class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-dark">
+            <button class="bg-white text-primary hover:bg-white/90 font-medium px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-xl">
+              Subscribe
+            </button>
+          </div>
+          <p class="text-white/60 text-sm mt-4">We respect your privacy and will not share your information with third parties</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-                            <!-- Historical reusable cases -->
-                            <div class="bg-green-50 p-4 rounded-lg">
-                                <h5 class="font-bold text-green-700 flex items-center mb-2">
-                                    <i class="fa fa-history mr-2"></i> Historical Reusable Cases
-                                </h5>
-                                <div id="historical-cases" class="text-gray-700"></div>
-                            </div>
+  <!-- Footer -->
+  <footer class="bg-dark text-white pt-12 pb-6">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+              <i class="fa fa-cogs text-white text-xl"></i>
+            </div>
+            <span class="text-xl font-bold">Mechanical Design Library</span>
+          </div>
+          <p class="text-gray-400 mb-4">A professional platform for sharing and retrieving mechanical design cases, helping engineers quickly find design inspiration and solutions.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-weixin text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-weibo text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-linkedin text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-github text-xl"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Case Search</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Popular Cases</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Recommended Designers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">User Guide</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Case Categories</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Automotive Engineering</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Aerospace Engineering</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Robotics</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Energy Power</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">General Machinery</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start space-x-3">
+              <i class="fa fa-map-marker text-primary mt-1"></i>
+              <span class="text-gray-400">No. 5 Zhongguancun South Street, Haidian District, Beijing</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <i class="fa fa-phone text-primary"></i>
+              <span class="text-gray-400">400-123-4567</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <i class="fa fa-envelope text-primary"></i>
+              <span class="text-gray-400">contact@mechanicaldesign.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2025 Mechanical Design Library. All rights reserved</p>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Service</a>
+            <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">About Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-                            <!-- Global reference cases -->
-                            <div class="bg-purple-50 p-4 rounded-lg">
-                                <h5 class="font-bold text-purple-700 flex items-center mb-2">
-                                    <i class="fa fa-globe mr-2"></i> Global Reference Cases
-                                </h5>
-                                <div id="global-cases" class="text-gray-700"></div>
-                            </div>
-
-                            <!-- Design text content -->
-                            <div class="bg-yellow-50 p-4 rounded-lg">
-                                <h5 class="font-bold text-yellow-700 flex items-center mb-2">
-                                    <i class="fa fa-file-text-o mr-2"></i> Design Text Content
-                                </h5>
-                                <div id="design-content" class="text-gray-700"></div>
-                            </div>
-
-                            <!-- Reference schematic diagrams -->
-                            <div class="bg-indigo-50 p-4 rounded-lg">
-                                <h5 class="font-bold text-indigo-700
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.fa-bars').parentElement.addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.classList.add('shadow-md');
+        header.classList.remove('border-b');
+      } else {
+        header.classList.remove('shadow-md');
+        header.classList.add('border-b');
+      }
+    });
+    
+    // File upload area interaction
+    const uploadArea = document.getElementById('upload-area');
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+      uploadArea.classList.add('border-primary');
+      uploadArea.classList.add('bg-primary/5');
+    }
+    
+    function unhighlight() {
+      uploadArea.classList.remove('border-primary');
+      uploadArea.classList.remove('bg-primary/5');
+    }
+    
+    uploadArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      // Handle uploaded files here
+      console.log(files);
+    }
+    
+    // Click upload area to trigger file selection
+    uploadArea.addEventListener('click', function() {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.pdf,.dwg,.step,.iges,.jpg,.png';
+      fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+          console.log('Selected file:', this.files[0]);
+          // Handle uploaded files here
+        }
+      });
+      fileInput.click();
+    });
+    
+    // Case statistics chart
+    const ctx = document.getElementById('casesChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Automotive Engineering', 'Aerospace Engineering', 'Robotics', 'Energy Power', 'General Machinery', 'Others'],
+        datasets: [{
+          label: 'Number of Cases',
+          data: [3200, 2400, 1800, 1600, 1400, 600],
+          backgroundColor: [
+            'rgba(22, 93, 255, 0.7)',
+            'rgba(54, 207, 201, 0.7)',
+            'rgba(255, 125, 0, 0.7)',
+            'rgba(72, 187, 120, 0.7)',
+            'rgba(102, 126, 234, 0.7)',
+            'rgba(160, 174, 192, 0.7)'
+          ],
+          borderColor: [
+            'rgb(22, 93, 255)',
+            'rgb(54, 207, 201)',
+            'rgb(255, 125, 0)',
+            'rgb(72, 187, 120)',
+            'rgb(102, 126, 234)',
+            'rgb(160, 174, 192)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+    
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId !== '#') {
+          document.querySelector(targetId).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+    
